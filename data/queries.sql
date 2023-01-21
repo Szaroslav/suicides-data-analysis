@@ -12,3 +12,4 @@ SELECT
     COUNT(CASE WHEN generation IS NULL THEN 1 END) generation_null_count
 FROM suicides
 
+ALTER TABLE suicides DROP COLUMN hdi_per_year
