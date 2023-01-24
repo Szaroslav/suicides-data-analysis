@@ -1,0 +1,1176 @@
+\documentclass[11pt]{article}
+
+    \usepackage[breakable]{tcolorbox}
+    \usepackage{parskip} % Stop auto-indenting (to mimic markdown behaviour)
+    
+
+    % Basic figure setup, for now with no caption control since it's done
+    % automatically by Pandoc (which extracts ![](path) syntax from Markdown).
+    \usepackage{graphicx}
+    % Maintain compatibility with old templates. Remove in nbconvert 6.0
+    \let\Oldincludegraphics\includegraphics
+    % Ensure that by default, figures have no caption (until we provide a
+    % proper Figure object with a Caption API and a way to capture that
+    % in the conversion process - todo).
+    \usepackage{caption}
+    \DeclareCaptionFormat{nocaption}{}
+    \captionsetup{format=nocaption,aboveskip=0pt,belowskip=0pt}
+
+    \usepackage[polish]{babel}
+
+    \usepackage{float}
+    \floatplacement{figure}{H} % forces figures to be placed at the correct location
+    \usepackage{xcolor} % Allow colors to be defined
+    \usepackage{enumerate} % Needed for markdown enumerations to work
+    \usepackage{geometry} % Used to adjust the document margins
+    \usepackage{amsmath} % Equations
+    \usepackage{amssymb} % Equations
+    \usepackage{textcomp} % defines textquotesingle
+    % Hack from http://tex.stackexchange.com/a/47451/13684:
+    \AtBeginDocument{%
+        \def\PYZsq{\textquotesingle}% Upright quotes in Pygmentized code
+    }
+    \usepackage{upquote} % Upright quotes for verbatim code
+    \usepackage{eurosym} % defines \euro
+
+    \usepackage{iftex}
+    \ifPDFTeX
+        \usepackage[T1]{fontenc}
+        \IfFileExists{alphabeta.sty}{
+              \usepackage{alphabeta}
+          }{
+              \usepackage[mathletters]{ucs}
+              \usepackage[utf8x]{inputenc}
+          }
+    \else
+        \usepackage{fontspec}
+        \usepackage{unicode-math}
+    \fi
+
+    \usepackage{fancyvrb} % verbatim replacement that allows latex
+    \usepackage{grffile} % extends the file name processing of package graphics 
+                         % to support a larger range
+    \makeatletter % fix for old versions of grffile with XeLaTeX
+    \@ifpackagelater{grffile}{2019/11/01}
+    {
+      % Do nothing on new versions
+    }
+    {
+      \def\Gread@@xetex#1{%
+        \IfFileExists{"\Gin@base".bb}%
+        {\Gread@eps{\Gin@base.bb}}%
+        {\Gread@@xetex@aux#1}%
+      }
+    }
+    \makeatother
+    \usepackage[Export]{adjustbox} % Used to constrain images to a maximum size
+    \adjustboxset{max size={0.9\linewidth}{0.9\paperheight}}
+
+    % The hyperref package gives us a pdf with properly built
+    % internal navigation ('pdf bookmarks' for the table of contents,
+    % internal cross-reference links, web links for URLs, etc.)
+    \usepackage{hyperref}
+    % The default LaTeX title has an obnoxious amount of whitespace. By default,
+    % titling removes some of it. It also provides customization options.
+    \usepackage{titling}
+    \usepackage{longtable} % longtable support required by pandoc >1.10
+    \usepackage{booktabs}  % table support for pandoc > 1.12.2
+    \usepackage{array}     % table support for pandoc >= 2.11.3
+    \usepackage{calc}      % table minipage width calculation for pandoc >= 2.11.1
+    \usepackage[inline]{enumitem} % IRkernel/repr support (it uses the enumerate* environment)
+    \usepackage[normalem]{ulem} % ulem is needed to support strikethroughs (\sout)
+                                % normalem makes italics be italics, not underlines
+    \usepackage{mathrsfs}
+    
+
+    
+    % Colors for the hyperref package
+    \definecolor{urlcolor}{rgb}{0,.145,.698}
+    \definecolor{linkcolor}{rgb}{.1, .1, .1}
+    \definecolor{citecolor}{rgb}{.12,.54,.11}
+
+    % ANSI colors
+    \definecolor{ansi-black}{HTML}{3E424D}
+    \definecolor{ansi-black-intense}{HTML}{282C36}
+    \definecolor{ansi-red}{HTML}{E75C58}
+    \definecolor{ansi-red-intense}{HTML}{B22B31}
+    \definecolor{ansi-green}{HTML}{00A250}
+    \definecolor{ansi-green-intense}{HTML}{007427}
+    \definecolor{ansi-yellow}{HTML}{DDB62B}
+    \definecolor{ansi-yellow-intense}{HTML}{B27D12}
+    \definecolor{ansi-blue}{HTML}{208FFB}
+    \definecolor{ansi-blue-intense}{HTML}{0065CA}
+    \definecolor{ansi-magenta}{HTML}{D160C4}
+    \definecolor{ansi-magenta-intense}{HTML}{A03196}
+    \definecolor{ansi-cyan}{HTML}{60C6C8}
+    \definecolor{ansi-cyan-intense}{HTML}{258F8F}
+    \definecolor{ansi-white}{HTML}{C5C1B4}
+    \definecolor{ansi-white-intense}{HTML}{A1A6B2}
+    \definecolor{ansi-default-inverse-fg}{HTML}{FFFFFF}
+    \definecolor{ansi-default-inverse-bg}{HTML}{000000}
+
+    % common color for the border for error outputs.
+    \definecolor{outerrorbackground}{HTML}{FFDFDF}
+
+    % commands and environments needed by pandoc snippets
+    % extracted from the output of `pandoc -s`
+    \providecommand{\tightlist}{%
+      \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+    \DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+    % Add ',fontsize=\small' for more characters per line
+    \newenvironment{Shaded}{}{}
+    \newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.56,0.13,0.00}{{#1}}}
+    \newcommand{\DecValTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\FloatTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\CharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\StringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\CommentTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textit{{#1}}}}
+    \newcommand{\OtherTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{{#1}}}
+    \newcommand{\AlertTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.02,0.16,0.49}{{#1}}}
+    \newcommand{\RegionMarkerTok}[1]{{#1}}
+    \newcommand{\ErrorTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\NormalTok}[1]{{#1}}
+    
+    % Additional commands for more recent versions of Pandoc
+    \newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.53,0.00,0.00}{{#1}}}
+    \newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.73,0.40,0.53}{{#1}}}
+    \newcommand{\ImportTok}[1]{{#1}}
+    \newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.73,0.13,0.13}{\textit{{#1}}}}
+    \newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\VariableTok}[1]{\textcolor[rgb]{0.10,0.09,0.49}{{#1}}}
+    \newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.40,0.40,0.40}{{#1}}}
+    \newcommand{\BuiltInTok}[1]{{#1}}
+    \newcommand{\ExtensionTok}[1]{{#1}}
+    \newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.74,0.48,0.00}{{#1}}}
+    \newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.49,0.56,0.16}{{#1}}}
+    \newcommand{\InformationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\WarningTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    
+    
+    % Define a nice break command that doesn't care if a line doesn't already
+    % exist.
+    \def\br{\hspace*{\fill} \\* }
+    % Math Jax compatibility definitions
+    \def\gt{>}
+    \def\lt{<}
+    \let\Oldtex\TeX
+    \let\Oldlatex\LaTeX
+    \renewcommand{\TeX}{\textrm{\Oldtex}}
+    \renewcommand{\LaTeX}{\textrm{\Oldlatex}}
+    % Document parameters
+    % Document title
+    \title{
+	Samobójstwa na świecie - analiza statystyczna \\
+	\large Projekt z rachunku prawdopodobieństwa i statystyki 2022/2023
+    }
+    \author{Jakub Szaredko}
+    
+    
+    
+    
+    
+% Pygments definitions
+\makeatletter
+\def\PY@reset{\let\PY@it=\relax \let\PY@bf=\relax%
+    \let\PY@ul=\relax \let\PY@tc=\relax%
+    \let\PY@bc=\relax \let\PY@ff=\relax}
+\def\PY@tok#1{\csname PY@tok@#1\endcsname}
+\def\PY@toks#1+{\ifx\relax#1\empty\else%
+    \PY@tok{#1}\expandafter\PY@toks\fi}
+\def\PY@do#1{\PY@bc{\PY@tc{\PY@ul{%
+    \PY@it{\PY@bf{\PY@ff{#1}}}}}}}
+\def\PY#1#2{\PY@reset\PY@toks#1+\relax+\PY@do{#2}}
+
+\@namedef{PY@tok@w}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.73,0.73}{##1}}}
+\@namedef{PY@tok@c}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+\@namedef{PY@tok@cp}{\def\PY@tc##1{\textcolor[rgb]{0.61,0.40,0.00}{##1}}}
+\@namedef{PY@tok@k}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kp}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kt}{\def\PY@tc##1{\textcolor[rgb]{0.69,0.00,0.25}{##1}}}
+\@namedef{PY@tok@o}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@ow}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\@namedef{PY@tok@nb}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@nf}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\@namedef{PY@tok@nc}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\@namedef{PY@tok@nn}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\@namedef{PY@tok@ne}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.80,0.25,0.22}{##1}}}
+\@namedef{PY@tok@nv}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@no}{\def\PY@tc##1{\textcolor[rgb]{0.53,0.00,0.00}{##1}}}
+\@namedef{PY@tok@nl}{\def\PY@tc##1{\textcolor[rgb]{0.46,0.46,0.00}{##1}}}
+\@namedef{PY@tok@ni}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.44,0.44,0.44}{##1}}}
+\@namedef{PY@tok@na}{\def\PY@tc##1{\textcolor[rgb]{0.41,0.47,0.13}{##1}}}
+\@namedef{PY@tok@nt}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@nd}{\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\@namedef{PY@tok@s}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@sd}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@si}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.64,0.35,0.47}{##1}}}
+\@namedef{PY@tok@se}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.67,0.36,0.12}{##1}}}
+\@namedef{PY@tok@sr}{\def\PY@tc##1{\textcolor[rgb]{0.64,0.35,0.47}{##1}}}
+\@namedef{PY@tok@ss}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@sx}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@m}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@gh}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\@namedef{PY@tok@gu}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.50,0.00,0.50}{##1}}}
+\@namedef{PY@tok@gd}{\def\PY@tc##1{\textcolor[rgb]{0.63,0.00,0.00}{##1}}}
+\@namedef{PY@tok@gi}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.52,0.00}{##1}}}
+\@namedef{PY@tok@gr}{\def\PY@tc##1{\textcolor[rgb]{0.89,0.00,0.00}{##1}}}
+\@namedef{PY@tok@ge}{\let\PY@it=\textit}
+\@namedef{PY@tok@gs}{\let\PY@bf=\textbf}
+\@namedef{PY@tok@gp}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\@namedef{PY@tok@go}{\def\PY@tc##1{\textcolor[rgb]{0.44,0.44,0.44}{##1}}}
+\@namedef{PY@tok@gt}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.27,0.87}{##1}}}
+\@namedef{PY@tok@err}{\def\PY@bc##1{{\setlength{\fboxsep}{\string -\fboxrule}\fcolorbox[rgb]{1.00,0.00,0.00}{1,1,1}{\strut ##1}}}}
+\@namedef{PY@tok@kc}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kd}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kn}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kr}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@bp}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@fm}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\@namedef{PY@tok@vc}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@vg}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@vi}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@vm}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@sa}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@sb}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@sc}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@dl}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@s2}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@sh}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@s1}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@mb}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@mf}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@mh}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@mi}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@il}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@mo}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@ch}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+\@namedef{PY@tok@cm}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+\@namedef{PY@tok@cpf}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+\@namedef{PY@tok@c1}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+\@namedef{PY@tok@cs}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+
+\def\PYZbs{\char`\\}
+\def\PYZus{\char`\_}
+\def\PYZob{\char`\{}
+\def\PYZcb{\char`\}}
+\def\PYZca{\char`\^}
+\def\PYZam{\char`\&}
+\def\PYZlt{\char`\<}
+\def\PYZgt{\char`\>}
+\def\PYZsh{\char`\#}
+\def\PYZpc{\char`\%}
+\def\PYZdl{\char`\$}
+\def\PYZhy{\char`\-}
+\def\PYZsq{\char`\'}
+\def\PYZdq{\char`\"}
+\def\PYZti{\char`\~}
+% for compatibility with earlier versions
+\def\PYZat{@}
+\def\PYZlb{[}
+\def\PYZrb{]}
+\makeatother
+
+
+    % For linebreaks inside Verbatim environment from package fancyvrb. 
+    \makeatletter
+        \newbox\Wrappedcontinuationbox 
+        \newbox\Wrappedvisiblespacebox 
+        \newcommand*\Wrappedvisiblespace {\textcolor{red}{\textvisiblespace}} 
+        \newcommand*\Wrappedcontinuationsymbol {\textcolor{red}{\llap{\tiny$\m@th\hookrightarrow$}}} 
+        \newcommand*\Wrappedcontinuationindent {3ex } 
+        \newcommand*\Wrappedafterbreak {\kern\Wrappedcontinuationindent\copy\Wrappedcontinuationbox} 
+        % Take advantage of the already applied Pygments mark-up to insert 
+        % potential linebreaks for TeX processing. 
+        %        {, <, #, %, $, ' and ": go to next line. 
+        %        _, }, ^, &, >, - and ~: stay at end of broken line. 
+        % Use of \textquotesingle for straight quote. 
+        \newcommand*\Wrappedbreaksatspecials {% 
+            \def\PYGZus{\discretionary{\char`\_}{\Wrappedafterbreak}{\char`\_}}% 
+            \def\PYGZob{\discretionary{}{\Wrappedafterbreak\char`\{}{\char`\{}}% 
+            \def\PYGZcb{\discretionary{\char`\}}{\Wrappedafterbreak}{\char`\}}}% 
+            \def\PYGZca{\discretionary{\char`\^}{\Wrappedafterbreak}{\char`\^}}% 
+            \def\PYGZam{\discretionary{\char`\&}{\Wrappedafterbreak}{\char`\&}}% 
+            \def\PYGZlt{\discretionary{}{\Wrappedafterbreak\char`\<}{\char`\<}}% 
+            \def\PYGZgt{\discretionary{\char`\>}{\Wrappedafterbreak}{\char`\>}}% 
+            \def\PYGZsh{\discretionary{}{\Wrappedafterbreak\char`\#}{\char`\#}}% 
+            \def\PYGZpc{\discretionary{}{\Wrappedafterbreak\char`\%}{\char`\%}}% 
+            \def\PYGZdl{\discretionary{}{\Wrappedafterbreak\char`\$}{\char`\$}}% 
+            \def\PYGZhy{\discretionary{\char`\-}{\Wrappedafterbreak}{\char`\-}}% 
+            \def\PYGZsq{\discretionary{}{\Wrappedafterbreak\textquotesingle}{\textquotesingle}}% 
+            \def\PYGZdq{\discretionary{}{\Wrappedafterbreak\char`\"}{\char`\"}}% 
+            \def\PYGZti{\discretionary{\char`\~}{\Wrappedafterbreak}{\char`\~}}% 
+        } 
+        % Some characters . , ; ? ! / are not pygmentized. 
+        % This macro makes them "active" and they will insert potential linebreaks 
+        \newcommand*\Wrappedbreaksatpunct {% 
+            \lccode`\~`\.\lowercase{\def~}{\discretionary{\hbox{\char`\.}}{\Wrappedafterbreak}{\hbox{\char`\.}}}% 
+            \lccode`\~`\,\lowercase{\def~}{\discretionary{\hbox{\char`\,}}{\Wrappedafterbreak}{\hbox{\char`\,}}}% 
+            \lccode`\~`\;\lowercase{\def~}{\discretionary{\hbox{\char`\;}}{\Wrappedafterbreak}{\hbox{\char`\;}}}% 
+            \lccode`\~`\:\lowercase{\def~}{\discretionary{\hbox{\char`\:}}{\Wrappedafterbreak}{\hbox{\char`\:}}}% 
+            \lccode`\~`\?\lowercase{\def~}{\discretionary{\hbox{\char`\?}}{\Wrappedafterbreak}{\hbox{\char`\?}}}% 
+            \lccode`\~`\!\lowercase{\def~}{\discretionary{\hbox{\char`\!}}{\Wrappedafterbreak}{\hbox{\char`\!}}}% 
+            \lccode`\~`\/\lowercase{\def~}{\discretionary{\hbox{\char`\/}}{\Wrappedafterbreak}{\hbox{\char`\/}}}% 
+            \catcode`\.\active
+            \catcode`\,\active 
+            \catcode`\;\active
+            \catcode`\:\active
+            \catcode`\?\active
+            \catcode`\!\active
+            \catcode`\/\active 
+            \lccode`\~`\~ 	
+        }
+    \makeatother
+
+    \let\OriginalVerbatim=\Verbatim
+    \makeatletter
+    \renewcommand{\Verbatim}[1][1]{%
+        %\parskip\z@skip
+        \sbox\Wrappedcontinuationbox {\Wrappedcontinuationsymbol}%
+        \sbox\Wrappedvisiblespacebox {\FV@SetupFont\Wrappedvisiblespace}%
+        \def\FancyVerbFormatLine ##1{\hsize\linewidth
+            \vtop{\raggedright\hyphenpenalty\z@\exhyphenpenalty\z@
+                \doublehyphendemerits\z@\finalhyphendemerits\z@
+                \strut ##1\strut}%
+        }%
+        % If the linebreak is at a space, the latter will be displayed as visible
+        % space at end of first line, and a continuation symbol starts next line.
+        % Stretch/shrink are however usually zero for typewriter font.
+        \def\FV@Space {%
+            \nobreak\hskip\z@ plus\fontdimen3\font minus\fontdimen4\font
+            \discretionary{\copy\Wrappedvisiblespacebox}{\Wrappedafterbreak}
+            {\kern\fontdimen2\font}%
+        }%
+        
+        % Allow breaks at special characters using \PYG... macros.
+        \Wrappedbreaksatspecials
+        % Breaks at punctuation characters . , ; ? ! and / need catcode=\active 	
+        \OriginalVerbatim[#1,codes*=\Wrappedbreaksatpunct]%
+    }
+    \makeatother
+
+    % Exact colors from NB
+    \definecolor{incolor}{HTML}{303F9F}
+    \definecolor{outcolor}{HTML}{D84315}
+    \definecolor{cellborder}{HTML}{CFCFCF}
+    \definecolor{cellbackground}{HTML}{F7F7F7}
+    
+    % prompt
+    \makeatletter
+    \newcommand{\boxspacing}{\kern\kvtcb@left@rule\kern\kvtcb@boxsep}
+    \makeatother
+    \newcommand{\prompt}[4]{
+        {\ttfamily\llap{{\color{#2}[#3]:\hspace{3pt}#4}}\vspace{-\baselineskip}}
+    }
+    
+
+    
+    % Prevent overflowing lines due to hard-to-break entities
+    \sloppy 
+    % Setup hyperref package
+    \hypersetup{
+      breaklinks=true,  % so long urls are correctly broken across lines
+      colorlinks=true,
+      urlcolor=urlcolor,
+      linkcolor=linkcolor,
+      citecolor=citecolor,
+      }
+    % Slightly bigger margins than the latex defaults
+    
+    \geometry{verbose,tmargin=1in,bmargin=1in,lmargin=1in,rmargin=1in}
+    
+    
+
+\begin{document}
+    
+    \maketitle
+    \thispagestyle{empty}
+    \newpage
+
+    \clearpage
+    \pagenumbering{arabic}
+    \tableofcontents
+    \newpage
+    
+
+    
+    \hypertarget{wprowadzenie}{%
+\section{Wprowadzenie}\label{wprowadzenie}}
+
+Celem projektu jest analiza samobójstw oraz zapoznanie się ze
+statystycznymi sposobami analizy danych. Powodem powstania tego projektu
+jest chęć dokładniejszego zrozumienia tego zjawiska, które staje się z
+roku na rok coraz bardziej popularne, a także moja osobista ciekawość. W
+dalszej części zostanie przeprowadzone badanie wybranych danych i
+opracowanie modelu statystycznego.
+
+\hypertarget{opis-danych-statystycznych}{%
+\section{Opis danych statystycznych}\label{opis-danych-statystycznych}}
+
+\hypertarget{ux17aruxf3dux142o}{%
+\subsection{Źródło}\label{ux17aruxf3dux142o}}
+
+Projekt został opracowany, dzięki danym z portalu
+\href{https://www.kaggle.com}{Kaggle}:
+\href{https://www.kaggle.com/datasets/russellyates88/suicide-rates-overview-1985-to-2016}{Suicide
+rates overview}.
+
+\hypertarget{wczytanie-bazy-danych}{%
+\subsection{Wczytanie bazy danych}\label{wczytanie-bazy-danych}}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{1}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k+kn}{import} \PY{n+nn}{sqlite3}
+
+\PY{n}{conn} \PY{o}{=} \PY{n}{sqlite3}\PY{o}{.}\PY{n}{connect}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{../data/suicides.db}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{cur} \PY{o}{=} \PY{n}{conn}\PY{o}{.}\PY{n}{cursor}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \hypertarget{czyszczenie-zbioru-danych}{%
+\subsection{Czyszczenie zbioru danych}\label{czyszczenie-zbioru-danych}}
+
+Wykorzystane dane są w dobrym stanie, kolumna \texttt{hdi\_per\_year},
+jedna z 12 kolumn, posiadała tylko braki danych w ponad 19 tys. wierszy,
+co jest bardzo olbrzymim ubytkiem i budzi niepewność przy analizie.
+Sposobów na poradzenie sobie z tym było kilka: - wstawieniem jakieś
+stałej, np. 0; - wstawieniem średniej arytmetycznej lub mediany z
+pozostałych znanych wartości; - wytworzenie pewnego modelu, który
+pozwoliłby na korelację tej kolumny z pozostałymi danymi, dzięki temu
+umożliwiłby relatywnie pewne przybliżenie; - usunięcie niepełnych
+wierszy; - usunięcie kolumny \texttt{hdi\_per\_year}.
+
+Ostatecznie usunięta została po prostu kolumna, ponieważ zbyt duży
+odsetek nieznanych wartości uniemożliwiłby na dobre wykorzystanie
+jakiegoś wskaźnika położenia jako zamiennika, a także kolumna ta nie
+była kluczowa do dalszej analizy - mimo tego, że jest ciekawą zmienną.
+Dodatkowo została usunięta kolumna \texttt{country\_year}, która była
+połączeniem 2 kolumn.
+
+Dane zostały także wyczyszczone o państwa, które nie posiadały
+przynajmniej 20 zapisanych danych statystycznych z okresu 1990-2015.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{2}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{cur}\PY{o}{.}\PY{n}{execute}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}\PYZdq{}\PYZdq{}}
+\PY{l+s+s2}{    DELETE FROM suicides WHERE country IN (}
+\PY{l+s+s2}{        SELECT country FROM (}
+\PY{l+s+s2}{            SELECT DISTINCT country, year FROM suicides WHERE year BETWEEN 1990 AND 2015}
+\PY{l+s+s2}{        )}
+\PY{l+s+s2}{        GROUP BY country}
+\PY{l+s+s2}{        HAVING COUNT(*) \PYZlt{} 20}
+\PY{l+s+s2}{    )}
+\PY{l+s+s2}{\PYZdq{}\PYZdq{}\PYZdq{}}\PY{p}{)}
+
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{3,068 rows affected}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+3,068 rows affected
+    \end{Verbatim}
+
+    Usuniętych zostało 24 krajów: - Albania - Aruba - Azerbejdżan - Bahrajn
+- Bośnia i Hercegowina - Cypr - Czarnogóra - Fidżi - Filipiny - Jamajka
+- Katar - Kiribati - Makau - Malediwy - Nikaragua - Oman - Republika
+Zielonego Przylądka - Saint Kitts i Nevis - San Marino - Serbia -
+Seszele - Sri Lanka - Turcja - Zjednoczone Emiraty Arabskie
+
+W dalszej części analizy będę stosować się do informacji głównie między
+1990 a 2015 rokiem, ponieważ pozostałe lata nie są aż tak dobrze opisane
+dla każdego z wylistowanych państw.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{3}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{years\PYZus{}range} \PY{o}{=} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{year BETWEEN 1990 AND 2015}\PY{l+s+s2}{\PYZdq{}}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \hypertarget{opis-bazy-danych}{%
+\subsection{Opis bazy danych}\label{opis-bazy-danych}}
+
+Początkowo baza danych zawierała 27800 wierszy, po czyszczeniu danych ta
+liczba uległa redukcji do 24752, dodatkowo znaczna część analizy
+przeprowadzona jest na latach 1990-2015, ze względu na zmniejszony zbiór
+danych na krańcach pierwotnego zakresu. Dane działają w oparciu o
+lokalnę bazę danych \texttt{SQLite\ 3.40.1}. W bazie znajduje się tylko
+1 tabela \texttt{suicides}, która opisuje zależność samobójstw
+dokonanych globalnie z podziałem na poszczególne państwa. \\ \\
+\texttt{suicides} \\
+\hspace*{1em}- \texttt{country}- nazwa państwa (\texttt{TEXT}) \\
+\hspace*{1em}- \texttt{year} - rok (\texttt{INTEGER}) \\
+\hspace*{1em}- \texttt{sex} - płeć (\texttt{TEXT}) \\
+\hspace*{1em}- \texttt{female} - kobieta - \texttt{male} - mężczyzna \\
+\hspace*{1em}- \texttt{age} - grupa wiekowa osób (\texttt{TEXT}) \\
+\hspace*{2em}- \texttt{5-14\ years} \\
+\hspace*{2em}- \texttt{15-24\ years} \\
+\hspace*{2em}- \texttt{25-34\ years} \\
+\hspace*{2em}- \texttt{35-54\ years} \\
+\hspace*{2em}- \texttt{55-74\ years} \\
+\hspace*{2em}- \texttt{75+\ years} \\
+\hspace*{1em}- \texttt{suicides\_no} - liczba dokonanych samobójstw (\texttt{INTEGER}) \\
+\hspace*{1em}- \texttt{population} - populacja (\texttt{INTEGER}) \\
+\hspace*{1em}- \texttt{suicides\_per\_100k} - liczba samobójstw na 100 tys. osób (\texttt{REAL}) \\
+\hspace*{1em}- \texttt{gdp\_per\_year} - roczne PKB (\texttt{REAL}) \\
+\hspace*{1em}- \texttt{gdp\_per\_capita} - roczne PKB na osobę (\texttt{REAL}) \\
+\hspace*{1em}- \texttt{generation} - nazwa generacji społecznej (\texttt{TEXT}) \\
+\hspace*{2em}- \texttt{Boomers} \\
+\hspace*{2em}- \texttt{G.I.\ Generation} \\
+\hspace*{2em}- \texttt{Generation\ X} \\
+\hspace*{2em}- \texttt{Generation\ Z} \\
+\hspace*{2em}- \texttt{Millenials} \\
+\hspace*{2em}- \texttt{Silent} \\
+
+    \hypertarget{analiza-eksploracyjna}{%
+\section{Analiza eksploracyjna}\label{analiza-eksploracyjna}}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{4}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k+kn}{import} \PY{n+nn}{numpy} \PY{k}{as} \PY{n+nn}{np}
+\PY{k+kn}{import} \PY{n+nn}{pandas} \PY{k}{as} \PY{n+nn}{pd}
+\PY{k+kn}{from} \PY{n+nn}{scipy} \PY{k+kn}{import} \PY{n}{stats}
+\PY{k+kn}{import} \PY{n+nn}{matplotlib}\PY{n+nn}{.}\PY{n+nn}{pyplot} \PY{k}{as} \PY{n+nn}{plt}
+\PY{k+kn}{import} \PY{n+nn}{matplotlib}\PY{n+nn}{.}\PY{n+nn}{colors} \PY{k}{as} \PY{n+nn}{cl}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \hypertarget{semi-globalna-liczba-samobuxf3jstw-dokonanych-w-latach-1990-2015}{%
+\subsection{Semi-globalna liczba samobójstw dokonanych w latach
+1990-2015}\label{semi-globalna-liczba-samobuxf3jstw-dokonanych-w-latach-1990-2015}}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{5}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{res} \PY{o}{=} \PY{n}{cur}\PY{o}{.}\PY{n}{execute}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}\PYZdq{}\PYZdq{}}
+\PY{l+s+s2}{    SELECT year, SUM(suicides\PYZus{}no) }
+\PY{l+s+s2}{    FROM suicides}
+\PY{l+s+s2}{    WHERE }\PY{l+s+si}{\PYZob{}}\PY{n}{years\PYZus{}range}\PY{l+s+si}{\PYZcb{}}
+\PY{l+s+s2}{    GROUP BY year}
+\PY{l+s+s2}{    ORDER BY year DESC}
+\PY{l+s+s2}{\PYZdq{}\PYZdq{}\PYZdq{}}\PY{p}{)}
+\PY{n}{x}\PY{p}{,} \PY{n}{y} \PY{o}{=} \PY{n+nb}{zip}\PY{p}{(}\PY{o}{*}\PY{n}{res}\PY{o}{.}\PY{n}{fetchall}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+\PY{n}{y\PYZus{}min}\PY{p}{,} \PY{n}{y\PYZus{}max} \PY{o}{=} \PY{n+nb}{min}\PY{p}{(}\PY{n}{y}\PY{p}{)}\PY{p}{,} \PY{n+nb}{max}\PY{p}{(}\PY{n}{y}\PY{p}{)}
+
+\PY{n}{fig}\PY{p}{,} \PY{n}{ax} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{subplots}\PY{p}{(}\PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{12}\PY{p}{,} \PY{l+m+mi}{6}\PY{p}{)}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{bar}\PY{p}{(}\PY{n}{x}\PY{p}{,} \PY{n}{y}\PY{p}{,} \PY{n}{color}\PY{o}{=}\PY{p}{[}\PY{n}{cl}\PY{o}{.}\PY{n}{hsv\PYZus{}to\PYZus{}rgb}\PY{p}{(}\PY{p}{(}\PY{l+m+mf}{.48}\PY{p}{,} \PY{l+m+mi}{1} \PY{o}{\PYZhy{}} \PY{p}{(}\PY{n}{x} \PY{o}{\PYZhy{}} \PY{n}{y\PYZus{}min}\PY{p}{)} \PY{o}{/} \PY{p}{(}\PY{n}{y\PYZus{}max} \PY{o}{\PYZhy{}} \PY{n}{y\PYZus{}min}\PY{p}{)} \PY{o}{*} \PY{l+m+mf}{.6}\PY{p}{,} \PY{l+m+mi}{1} \PY{o}{\PYZhy{}} \PY{p}{(}\PY{n}{x} \PY{o}{\PYZhy{}} \PY{n}{y\PYZus{}min}\PY{p}{)} \PY{o}{/} \PY{p}{(}\PY{n}{y\PYZus{}max} \PY{o}{\PYZhy{}} \PY{n}{y\PYZus{}min}\PY{p}{)} \PY{o}{*} \PY{l+m+mf}{.4}\PY{p}{)}\PY{p}{)} \PY{k}{for} \PY{n}{x} \PY{o+ow}{in} \PY{n}{y}\PY{p}{]}\PY{p}{)}
+
+\PY{n}{ax}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Liczba dokonanych samobójstw na świecie między 1990\PYZhy{}2015}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{set\PYZus{}xlabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Rok}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{set\PYZus{}ylabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Liczba samobójstw}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+
+\PY{n}{plt}\PY{o}{.}\PY{n}{minorticks\PYZus{}on}\PY{p}{(}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{grid}\PY{p}{(}\PY{n}{which}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{major}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{grid}\PY{p}{(}\PY{n}{which}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{minor}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{linestyle}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{\PYZhy{}\PYZhy{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{color}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{\PYZsh{}000000}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{alpha}\PY{o}{=}\PY{l+m+mf}{.1}\PY{p}{)}
+
+\PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_10_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    Wskaźniki i położenia rozproszenia
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{6}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{data} \PY{o}{=} \PY{p}{[}\PY{p}{[}
+    \PY{n+nb}{round}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{mean}\PY{p}{(}\PY{n}{y}\PY{p}{)}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{)}\PY{p}{,}
+    \PY{n}{np}\PY{o}{.}\PY{n}{median}\PY{p}{(}\PY{n}{y}\PY{p}{)}\PY{p}{,}
+    \PY{n+nb}{round}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{std}\PY{p}{(}\PY{n}{y}\PY{p}{)}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{)}\PY{p}{,}
+    \PY{n+nb}{round}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{mean}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{absolute}\PY{p}{(}\PY{n}{y} \PY{o}{\PYZhy{}} \PY{n}{np}\PY{o}{.}\PY{n}{mean}\PY{p}{(}\PY{n}{y}\PY{p}{)}\PY{p}{)}\PY{p}{)}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{)}
+\PY{p}{]}\PY{p}{]}
+\PY{n}{pd}\PY{o}{.}\PY{n}{DataFrame}\PY{p}{(}\PY{n}{data}\PY{p}{,} \PY{n}{columns}\PY{o}{=}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Wartość średnia}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Mediana}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Oddchylenie standardowe}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Oddchylenie przeciętne}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{p}{,} \PY{n}{index}\PY{o}{=}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}\PY{o}{.}\PY{n}{transpose}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{6}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+
+Wartość średnia          229950.7
+Mediana                  232243.5
+Oddchylenie standardowe   15259.0
+Oddchylenie przeciętne    11872.3
+\end{Verbatim}
+\end{tcolorbox}
+        
+    Na powyższym wykresie można zaobserować spadki na początku lat 90. jak i
+także po 2011 roku. Główną przyczyną mniejszej liczby śmierci jest
+najprawdopodobniej zmniejszona ilość zebranych danych na poziomie ok.
+10-15\%.
+
+    \hypertarget{najwiux119kszych-paux144stw-pod-wzglux119dem-dokonanych-samobuxf3jstw-w-latach-1990-2015}{%
+\subsection{10 największych państw pod względem dokonanych samobójstw w
+latach
+1990-2015}\label{najwiux119kszych-paux144stw-pod-wzglux119dem-dokonanych-samobuxf3jstw-w-latach-1990-2015}}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{7}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{res} \PY{o}{=} \PY{n}{cur}\PY{o}{.}\PY{n}{execute}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}\PYZdq{}\PYZdq{}}
+\PY{l+s+s2}{    SELECT country, SUM(suicides\PYZus{}no) }
+\PY{l+s+s2}{    FROM suicides}
+\PY{l+s+s2}{    WHERE }\PY{l+s+si}{\PYZob{}}\PY{n}{years\PYZus{}range}\PY{l+s+si}{\PYZcb{}}
+\PY{l+s+s2}{    GROUP BY country}
+\PY{l+s+s2}{    ORDER BY SUM(suicides\PYZus{}no) DESC}
+\PY{l+s+s2}{\PYZdq{}\PYZdq{}\PYZdq{}}\PY{p}{)}
+\PY{n}{countries}\PY{p}{,} \PY{n}{y} \PY{o}{=} \PY{n+nb}{zip}\PY{p}{(}\PY{o}{*}\PY{n}{res}\PY{o}{.}\PY{n}{fetchall}\PY{p}{(}\PY{p}{)}\PY{p}{[}\PY{p}{:}\PY{l+m+mi}{10}\PY{p}{]}\PY{p}{)}
+
+\PY{n}{fig}\PY{p}{,} \PY{n}{ax} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{subplots}\PY{p}{(}\PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{12}\PY{p}{,} \PY{l+m+mi}{6}\PY{p}{)}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{ticklabel\PYZus{}format}\PY{p}{(}\PY{n}{useOffset}\PY{o}{=}\PY{k+kc}{False}\PY{p}{,} \PY{n}{style}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{plain}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{bar}\PY{p}{(}\PY{n}{countries}\PY{p}{,} \PY{n}{y}\PY{p}{,} \PY{n}{color}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{\PYZsh{}f02d48}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+
+\PY{n}{ax}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Największe państwa pod względem dokonanych samobójstw w latach 1990\PYZhy{}2015}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{set\PYZus{}xlabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Państwo}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{set\PYZus{}ylabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Liczba samobójstw}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+
+\PY{n}{plt}\PY{o}{.}\PY{n}{xticks}\PY{p}{(}\PY{n}{rotation}\PY{o}{=}\PY{l+m+mi}{45}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{minorticks\PYZus{}on}\PY{p}{(}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{grid}\PY{p}{(}\PY{n}{which}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{major}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{grid}\PY{p}{(}\PY{n}{which}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{minor}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{linestyle}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{\PYZhy{}\PYZhy{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{color}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{\PYZsh{}000000}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{alpha}\PY{o}{=}\PY{l+m+mf}{.1}\PY{p}{)}
+
+\PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_15_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    Wskaźniki położenia i rozproszenia (roczne)
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{8}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{res} \PY{o}{=} \PY{n}{cur}\PY{o}{.}\PY{n}{execute}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}\PYZdq{}\PYZdq{}}
+\PY{l+s+s2}{    SELECT country, SUM(suicides\PYZus{}no)}
+\PY{l+s+s2}{    FROM suicides}
+\PY{l+s+s2}{    WHERE country IN (}
+\PY{l+s+s2}{        SELECT country}
+\PY{l+s+s2}{        FROM suicides}
+\PY{l+s+s2}{        WHERE }\PY{l+s+si}{\PYZob{}}\PY{n}{years\PYZus{}range}\PY{l+s+si}{\PYZcb{}}
+\PY{l+s+s2}{        GROUP BY country}
+\PY{l+s+s2}{        ORDER BY SUM(suicides\PYZus{}no) DESC}
+\PY{l+s+s2}{        LIMIT 10}
+\PY{l+s+s2}{    ) AND }\PY{l+s+si}{\PYZob{}}\PY{n}{years\PYZus{}range}\PY{l+s+si}{\PYZcb{}}
+\PY{l+s+s2}{    GROUP BY country, year}
+\PY{l+s+s2}{    ORDER BY country, year}
+\PY{l+s+s2}{\PYZdq{}\PYZdq{}\PYZdq{}}\PY{p}{)}
+\PY{n}{res} \PY{o}{=} \PY{n}{res}\PY{o}{.}\PY{n}{fetchall}\PY{p}{(}\PY{p}{)}
+
+\PY{n}{suicides\PYZus{}by\PYZus{}country} \PY{o}{=} \PY{p}{[}\PY{p}{[}\PY{n}{y} \PY{k}{for} \PY{n}{x}\PY{p}{,} \PY{n}{y} \PY{o+ow}{in} \PY{n}{res} \PY{k}{if} \PY{n}{x} \PY{o}{==} \PY{n}{c}\PY{p}{]} \PY{k}{for} \PY{n}{c} \PY{o+ow}{in} \PY{n}{countries}\PY{p}{]}
+\PY{n}{data} \PY{o}{=} \PY{p}{[}
+    \PY{p}{[}
+        \PY{n}{c}\PY{p}{,}
+        \PY{n+nb}{round}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{mean}\PY{p}{(}\PY{n}{suicides\PYZus{}by\PYZus{}country}\PY{p}{[}\PY{n}{i}\PY{p}{]}\PY{p}{)}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{)}\PY{p}{,}
+        \PY{n}{np}\PY{o}{.}\PY{n}{median}\PY{p}{(}\PY{n}{suicides\PYZus{}by\PYZus{}country}\PY{p}{[}\PY{n}{i}\PY{p}{]}\PY{p}{)}\PY{p}{,}
+        \PY{n+nb}{round}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{std}\PY{p}{(}\PY{n}{suicides\PYZus{}by\PYZus{}country}\PY{p}{[}\PY{n}{i}\PY{p}{]}\PY{p}{)}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{)}\PY{p}{,}
+        \PY{n+nb}{round}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{mean}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{absolute}\PY{p}{(}\PY{n}{suicides\PYZus{}by\PYZus{}country}\PY{p}{[}\PY{n}{i}\PY{p}{]} \PY{o}{\PYZhy{}} \PY{n}{np}\PY{o}{.}\PY{n}{mean}\PY{p}{(}\PY{n}{suicides\PYZus{}by\PYZus{}country}\PY{p}{[}\PY{n}{i}\PY{p}{]}\PY{p}{)}\PY{p}{)}\PY{p}{)}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{)}
+    \PY{p}{]} \PY{k}{for} \PY{n}{i}\PY{p}{,} \PY{n}{c} \PY{o+ow}{in} \PY{n+nb}{enumerate}\PY{p}{(}\PY{n}{countries}\PY{p}{)}
+\PY{p}{]}
+\PY{n}{pd}\PY{o}{.}\PY{n}{DataFrame}\PY{p}{(}\PY{n}{data}\PY{p}{,} \PY{n}{columns}\PY{o}{=}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Państwo}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Wartość średnia}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Mediana}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Oddchylenie standardowe}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Oddchylenie przeciętne}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{p}{,} \PY{n}{index}\PY{o}{=}\PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,} \PY{l+m+mi}{11}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{8}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+               Państwo  Wartość średnia  Mediana  Oddchylenie standardowe  \textbackslash{}
+1   Russian Federation          45070.0  45862.5                  11185.8
+2        United States          33934.1  31561.0                   4389.2
+3                Japan          26569.6  28949.0                   4244.8
+4              Germany          11202.4  11114.0                   1383.3
+5              Ukraine          11570.5  11256.0                   2303.7
+6               France          10744.9  10643.0                    761.4
+7    Republic of Korea           9435.0   9632.0                   4251.5
+8               Brazil           7865.9   7774.5                   1807.5
+9               Poland           5795.8   5820.5                    366.2
+10      United Kingdom           4343.7   4302.5                    256.6
+
+    Oddchylenie przeciętne
+1                   9880.7
+2                   3745.1
+3                   3917.4
+4                   1154.0
+5                   2025.5
+6                    592.7
+7                   3863.5
+8                   1537.6
+9                    291.8
+10                   210.2
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \hypertarget{najmniejszych-paux144stw-pod-wzglux119dem-dokonanych-samobuxf3jstw-w-latach-1990-2015}{%
+\subsection{10 najmniejszych państw pod względem dokonanych samobójstw w
+latach
+1990-2015}\label{najmniejszych-paux144stw-pod-wzglux119dem-dokonanych-samobuxf3jstw-w-latach-1990-2015}}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{9}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{res} \PY{o}{=} \PY{n}{cur}\PY{o}{.}\PY{n}{execute}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}\PYZdq{}\PYZdq{}}
+\PY{l+s+s2}{    SELECT country, SUM(suicides\PYZus{}no) }
+\PY{l+s+s2}{    FROM suicides}
+\PY{l+s+s2}{    WHERE }\PY{l+s+si}{\PYZob{}}\PY{n}{years\PYZus{}range}\PY{l+s+si}{\PYZcb{}}
+\PY{l+s+s2}{    GROUP BY country}
+\PY{l+s+s2}{    ORDER BY SUM(suicides\PYZus{}no)}
+\PY{l+s+s2}{\PYZdq{}\PYZdq{}\PYZdq{}}\PY{p}{)}
+\PY{n}{countries}\PY{p}{,} \PY{n}{y} \PY{o}{=} \PY{n+nb}{zip}\PY{p}{(}\PY{o}{*}\PY{n}{res}\PY{o}{.}\PY{n}{fetchall}\PY{p}{(}\PY{p}{)}\PY{p}{[}\PY{p}{:}\PY{l+m+mi}{10}\PY{p}{]}\PY{p}{)}
+
+\PY{n}{fig}\PY{p}{,} \PY{n}{ax} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{subplots}\PY{p}{(}\PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{12}\PY{p}{,} \PY{l+m+mi}{6}\PY{p}{)}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{ticklabel\PYZus{}format}\PY{p}{(}\PY{n}{useOffset}\PY{o}{=}\PY{k+kc}{False}\PY{p}{,} \PY{n}{style}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{plain}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{bar}\PY{p}{(}\PY{n}{countries}\PY{p}{,} \PY{n}{y}\PY{p}{,} \PY{n}{color}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{\PYZsh{}35ee97}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+
+\PY{n}{ax}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Najmniejsze państwa pod względem dokonanych samobójstw w latach 1990\PYZhy{}2015}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{set\PYZus{}xlabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Państwo}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{set\PYZus{}ylabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Liczba samobójstw}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+
+\PY{n}{plt}\PY{o}{.}\PY{n}{xticks}\PY{p}{(}\PY{n}{rotation}\PY{o}{=}\PY{l+m+mi}{45}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{minorticks\PYZus{}on}\PY{p}{(}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{grid}\PY{p}{(}\PY{n}{which}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{major}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{grid}\PY{p}{(}\PY{n}{which}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{minor}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{linestyle}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{\PYZhy{}\PYZhy{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{color}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{\PYZsh{}000000}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{alpha}\PY{o}{=}\PY{l+m+mf}{.1}\PY{p}{)}
+
+\PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_19_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    Wskaźniki położenia i rozproszenia (roczne)
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{10}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{res} \PY{o}{=} \PY{n}{cur}\PY{o}{.}\PY{n}{execute}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}\PYZdq{}\PYZdq{}}
+\PY{l+s+s2}{    SELECT country, SUM(suicides\PYZus{}no)}
+\PY{l+s+s2}{    FROM suicides}
+\PY{l+s+s2}{    WHERE country IN (}
+\PY{l+s+s2}{        SELECT country}
+\PY{l+s+s2}{        FROM suicides}
+\PY{l+s+s2}{        WHERE }\PY{l+s+si}{\PYZob{}}\PY{n}{years\PYZus{}range}\PY{l+s+si}{\PYZcb{}}
+\PY{l+s+s2}{        GROUP BY country}
+\PY{l+s+s2}{        ORDER BY SUM(suicides\PYZus{}no)}
+\PY{l+s+s2}{        LIMIT 10}
+\PY{l+s+s2}{    ) AND }\PY{l+s+si}{\PYZob{}}\PY{n}{years\PYZus{}range}\PY{l+s+si}{\PYZcb{}}
+\PY{l+s+s2}{    GROUP BY country, year}
+\PY{l+s+s2}{    ORDER BY country, year}
+\PY{l+s+s2}{\PYZdq{}\PYZdq{}\PYZdq{}}\PY{p}{)}
+\PY{n}{res} \PY{o}{=} \PY{n}{res}\PY{o}{.}\PY{n}{fetchall}\PY{p}{(}\PY{p}{)}
+
+\PY{n}{suicides\PYZus{}by\PYZus{}country} \PY{o}{=} \PY{p}{[}\PY{p}{[}\PY{n}{y} \PY{k}{for} \PY{n}{x}\PY{p}{,} \PY{n}{y} \PY{o+ow}{in} \PY{n}{res} \PY{k}{if} \PY{n}{x} \PY{o}{==} \PY{n}{c}\PY{p}{]} \PY{k}{for} \PY{n}{c} \PY{o+ow}{in} \PY{n}{countries}\PY{p}{]}
+\PY{n}{data} \PY{o}{=} \PY{p}{[}\PY{p}{[}
+        \PY{n}{c}\PY{p}{,}
+        \PY{n+nb}{round}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{mean}\PY{p}{(}\PY{n}{suicides\PYZus{}by\PYZus{}country}\PY{p}{[}\PY{n}{i}\PY{p}{]}\PY{p}{)}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{)}\PY{p}{,}
+        \PY{n}{np}\PY{o}{.}\PY{n}{median}\PY{p}{(}\PY{n}{suicides\PYZus{}by\PYZus{}country}\PY{p}{[}\PY{n}{i}\PY{p}{]}\PY{p}{)}\PY{p}{,}
+        \PY{n+nb}{round}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{std}\PY{p}{(}\PY{n}{suicides\PYZus{}by\PYZus{}country}\PY{p}{[}\PY{n}{i}\PY{p}{]}\PY{p}{)}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{)}\PY{p}{,}
+        \PY{n+nb}{round}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{mean}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{absolute}\PY{p}{(}\PY{n}{suicides\PYZus{}by\PYZus{}country}\PY{p}{[}\PY{n}{i}\PY{p}{]} \PY{o}{\PYZhy{}} \PY{n}{np}\PY{o}{.}\PY{n}{mean}\PY{p}{(}\PY{n}{suicides\PYZus{}by\PYZus{}country}\PY{p}{[}\PY{n}{i}\PY{p}{]}\PY{p}{)}\PY{p}{)}\PY{p}{)}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{)}
+    \PY{p}{]} \PY{k}{for} \PY{n}{i}\PY{p}{,} \PY{n}{c} \PY{o+ow}{in} \PY{n+nb}{enumerate}\PY{p}{(}\PY{n}{countries}\PY{p}{)}
+\PY{p}{]}
+\PY{n}{pd}\PY{o}{.}\PY{n}{DataFrame}\PY{p}{(}\PY{n}{data}\PY{p}{,} \PY{n}{columns}\PY{o}{=}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Państwo}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Wartość średnia}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Mediana}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Oddchylenie standardowe}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Oddchylenie przeciętne}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{p}{,} \PY{n}{index}\PY{o}{=}\PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,} \PY{l+m+mi}{11}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{10}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+                         Państwo  Wartość średnia  Mediana  \textbackslash{}
+1            Antigua and Barbuda              0.5      0.0
+2                        Grenada              1.3      1.0
+3                        Bahamas              4.2      4.0
+4   Saint Vincent and Grenadines              5.5      5.0
+5                       Barbados              6.4      3.0
+6                    Saint Lucia              8.2      8.0
+7                         Belize             13.6     14.0
+8                          Malta             21.1     20.0
+9                        Iceland             34.8     34.0
+10                        Kuwait             41.7     42.5
+
+    Oddchylenie standardowe  Oddchylenie przeciętne
+1                       0.7                     0.6
+2                       1.7                     1.3
+3                       2.6                     2.0
+4                       2.8                     2.3
+5                       6.7                     6.2
+6                       3.7                     2.9
+7                       7.6                     5.9
+8                       7.6                     6.4
+9                       6.9                     5.5
+10                     11.6                     9.2
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \hypertarget{liczba-dokonanych-samobuxf3jstw-w-polsce-miux119dzy-1990-2015-z-podziaux142em-na-pux142ci}{%
+\subsection{Liczba dokonanych samobójstw w Polsce między 1990-2015 (z
+podziałem na
+płci)}\label{liczba-dokonanych-samobuxf3jstw-w-polsce-miux119dzy-1990-2015-z-podziaux142em-na-pux142ci}}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{11}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{res} \PY{o}{=} \PY{n}{cur}\PY{o}{.}\PY{n}{execute}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}\PYZdq{}\PYZdq{}}
+\PY{l+s+s2}{    SELECT sex, SUM(suicides\PYZus{}no)}
+\PY{l+s+s2}{    FROM suicides}
+\PY{l+s+s2}{    WHERE country = }\PY{l+s+s2}{\PYZsq{}}\PY{l+s+s2}{Poland}\PY{l+s+s2}{\PYZsq{}}
+\PY{l+s+s2}{    GROUP BY year, sex}
+\PY{l+s+s2}{    ORDER BY year}
+\PY{l+s+s2}{\PYZdq{}\PYZdq{}\PYZdq{}}\PY{p}{)}
+\PY{n}{res} \PY{o}{=} \PY{n}{res}\PY{o}{.}\PY{n}{fetchall}\PY{p}{(}\PY{p}{)}
+\PY{n}{years} \PY{o}{=} \PY{n}{cur}\PY{o}{.}\PY{n}{execute}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{SELECT DISTINCT year FROM suicides WHERE country = }\PY{l+s+s2}{\PYZsq{}}\PY{l+s+s2}{Poland}\PY{l+s+s2}{\PYZsq{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}\PY{o}{.}\PY{n}{fetchall}\PY{p}{(}\PY{p}{)}
+\PY{n}{years} \PY{o}{=} \PY{p}{[}\PY{n}{y}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]} \PY{k}{for} \PY{n}{y} \PY{o+ow}{in} \PY{n}{years}\PY{p}{]}
+\PY{n}{suicides\PYZus{}female} \PY{o}{=} \PY{p}{[}\PY{n}{x} \PY{k}{for} \PY{n}{s}\PY{p}{,} \PY{n}{x} \PY{o+ow}{in} \PY{n}{res} \PY{k}{if} \PY{n}{s} \PY{o}{==} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{female}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}
+\PY{n}{suicides\PYZus{}male} \PY{o}{=} \PY{p}{[}\PY{n}{x} \PY{k}{for} \PY{n}{s}\PY{p}{,} \PY{n}{x} \PY{o+ow}{in} \PY{n}{res} \PY{k}{if} \PY{n}{s} \PY{o}{==} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{male}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}
+
+\PY{n}{x} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{arange}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{years}\PY{p}{)}\PY{p}{)}  \PY{c+c1}{\PYZsh{} the label locations}
+\PY{n}{width} \PY{o}{=} \PY{l+m+mf}{0.35}  \PY{c+c1}{\PYZsh{} the width of the bars}
+
+\PY{n}{fig}\PY{p}{,} \PY{n}{ax} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{subplots}\PY{p}{(}\PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{12}\PY{p}{,} \PY{l+m+mi}{15}\PY{p}{)}\PY{p}{)}
+\PY{n}{rects1} \PY{o}{=} \PY{n}{ax}\PY{o}{.}\PY{n}{barh}\PY{p}{(}\PY{n}{x} \PY{o}{\PYZhy{}} \PY{n}{width}\PY{o}{/}\PY{l+m+mi}{2}\PY{p}{,} \PY{n}{suicides\PYZus{}female}\PY{p}{,} \PY{n}{width}\PY{p}{,} \PY{n}{label}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Kobiety}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{color}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{\PYZsh{}9940f2}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{rects2} \PY{o}{=} \PY{n}{ax}\PY{o}{.}\PY{n}{barh}\PY{p}{(}\PY{n}{x} \PY{o}{+} \PY{n}{width}\PY{o}{/}\PY{l+m+mi}{2}\PY{p}{,} \PY{n}{suicides\PYZus{}male}\PY{p}{,} \PY{n}{width}\PY{p}{,} \PY{n}{label}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Mężczyźni}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{color}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{\PYZsh{}f0922d}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} Axis formatting}
+\PY{n}{ax}\PY{o}{.}\PY{n}{ticklabel\PYZus{}format}\PY{p}{(}\PY{n}{useOffset}\PY{o}{=}\PY{k+kc}{False}\PY{p}{,} \PY{n}{style}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{plain}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Liczba dokonanych samobójstw w Polsce między 1990\PYZhy{}2015}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{set\PYZus{}ylabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Rok}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{set\PYZus{}xlabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Liczba samobójstw}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{invert\PYZus{}yaxis}\PY{p}{(}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{set\PYZus{}yticks}\PY{p}{(}\PY{n}{x}\PY{p}{,} \PY{n}{years}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{tick\PYZus{}params}\PY{p}{(}\PY{n}{axis}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{y}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{which}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{minor}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{left}\PY{o}{=}\PY{k+kc}{False}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{legend}\PY{p}{(}\PY{p}{)}
+
+\PY{n}{ax}\PY{o}{.}\PY{n}{bar\PYZus{}label}\PY{p}{(}\PY{n}{rects1}\PY{p}{,} \PY{n}{padding}\PY{o}{=}\PY{l+m+mi}{3}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{bar\PYZus{}label}\PY{p}{(}\PY{n}{rects2}\PY{p}{,} \PY{n}{padding}\PY{o}{=}\PY{l+m+mi}{3}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} Grid formatting}
+\PY{n}{plt}\PY{o}{.}\PY{n}{minorticks\PYZus{}on}\PY{p}{(}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{grid}\PY{p}{(}\PY{n}{which}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{major}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{color}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{\PYZsh{}7a7784}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{grid}\PY{p}{(}\PY{n}{which}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{minor}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{axis}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{x}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{linestyle}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{\PYZhy{}\PYZhy{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{color}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{\PYZsh{}000000}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{alpha}\PY{o}{=}\PY{l+m+mf}{.1}\PY{p}{)}
+
+\PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_23_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    Wskaźniki położenia i rozproszenia
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{12}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{data} \PY{o}{=} \PY{p}{[}
+    \PY{p}{[}
+        \PY{n+nb}{round}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{mean}\PY{p}{(}\PY{n}{suicides\PYZus{}female}\PY{p}{)}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{)}\PY{p}{,}
+        \PY{n}{np}\PY{o}{.}\PY{n}{median}\PY{p}{(}\PY{n}{suicides\PYZus{}female}\PY{p}{)}\PY{p}{,}
+        \PY{n+nb}{round}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{std}\PY{p}{(}\PY{n}{suicides\PYZus{}female}\PY{p}{)}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{)}\PY{p}{,}
+        \PY{n+nb}{round}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{mean}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{absolute}\PY{p}{(}\PY{n}{suicides\PYZus{}female} \PY{o}{\PYZhy{}} \PY{n}{np}\PY{o}{.}\PY{n}{mean}\PY{p}{(}\PY{n}{suicides\PYZus{}female}\PY{p}{)}\PY{p}{)}\PY{p}{)}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{)}
+    \PY{p}{]}\PY{p}{,}
+    \PY{p}{[}
+        \PY{n+nb}{round}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{mean}\PY{p}{(}\PY{n}{suicides\PYZus{}male}\PY{p}{)}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{)}\PY{p}{,}
+        \PY{n}{np}\PY{o}{.}\PY{n}{median}\PY{p}{(}\PY{n}{suicides\PYZus{}male}\PY{p}{)}\PY{p}{,}
+        \PY{n+nb}{round}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{std}\PY{p}{(}\PY{n}{suicides\PYZus{}male}\PY{p}{)}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{)}\PY{p}{,}
+        \PY{n+nb}{round}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{mean}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{absolute}\PY{p}{(}\PY{n}{suicides\PYZus{}male} \PY{o}{\PYZhy{}} \PY{n}{np}\PY{o}{.}\PY{n}{mean}\PY{p}{(}\PY{n}{suicides\PYZus{}male}\PY{p}{)}\PY{p}{)}\PY{p}{)}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{)}
+    \PY{p}{]}
+\PY{p}{]}
+\PY{n}{pd}\PY{o}{.}\PY{n}{DataFrame}\PY{p}{(}\PY{n}{data}\PY{p}{,} \PY{n}{columns}\PY{o}{=}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Wartość średnia}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Mediana}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Oddchylenie standardowe}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Oddchylenie przeciętne}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{p}{,} \PY{n}{index}\PY{o}{=}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Kobiety}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Mężczyźni}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{p}{)}\PY{o}{.}\PY{n}{transpose}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{12}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+                         Kobiety  Mężczyźni
+Wartość średnia            877.6     4918.1
+Mediana                    881.5     4914.0
+Oddchylenie standardowe     69.1      372.5
+Oddchylenie przeciętne      55.8      298.0
+\end{Verbatim}
+\end{tcolorbox}
+        
+    Dysproporcja między samobójstwami dokonanych przez kobiety a mężczyzn
+jest zaskakująca, zarówno w Polsce jak i na świecie. Średni udział
+kobiet do wszystkich dokonanych samobójstw w Polsce wynosi ok. 15\%,
+natomiast na świecie ok. 23\% - zatem w Polsce statystycznie więcej
+mężczyzn decyduje się na drastyczne kroki w postaci skrócenia swego
+życia.
+
+    \hypertarget{liczba-dokonanych-samobuxf3jstw-w-latach-1990-2015-z-podziaux142em-na-generacje}{%
+\subsection{Liczba dokonanych samobójstw w latach 1990-2015 z podziałem
+na
+generacje}\label{liczba-dokonanych-samobuxf3jstw-w-latach-1990-2015-z-podziaux142em-na-generacje}}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{13}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{res} \PY{o}{=} \PY{n}{cur}\PY{o}{.}\PY{n}{execute}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}\PYZdq{}\PYZdq{}}
+\PY{l+s+s2}{    SELECT generation, year, SUM(suicides\PYZus{}no)}
+\PY{l+s+s2}{    FROM suicides}
+\PY{l+s+s2}{    WHERE }\PY{l+s+si}{\PYZob{}}\PY{n}{years\PYZus{}range}\PY{l+s+si}{\PYZcb{}}
+\PY{l+s+s2}{    GROUP BY generation, year}
+\PY{l+s+s2}{\PYZdq{}\PYZdq{}\PYZdq{}}\PY{p}{)}\PY{o}{.}\PY{n}{fetchall}\PY{p}{(}\PY{p}{)}
+\PY{n}{generations} \PY{o}{=} \PY{p}{[}\PY{n}{x}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]} \PY{k}{for} \PY{n}{x} \PY{o+ow}{in} \PY{n}{cur}\PY{o}{.}\PY{n}{execute}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{SELECT DISTINCT generation FROM suicides ORDER by generation}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}\PY{o}{.}\PY{n}{fetchall}\PY{p}{(}\PY{p}{)}\PY{p}{]}
+\PY{n}{years} \PY{o}{=} \PY{p}{[}\PY{n}{x}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]} \PY{k}{for} \PY{n}{x} \PY{o+ow}{in} \PY{n}{cur}\PY{o}{.}\PY{n}{execute}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{SELECT DISTINCT year FROM suicides WHERE }\PY{l+s+si}{\PYZob{}}\PY{n}{years\PYZus{}range}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{ ORDER BY year}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}\PY{o}{.}\PY{n}{fetchall}\PY{p}{(}\PY{p}{)}\PY{p}{]}
+
+\PY{n}{suicides} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{empty}\PY{p}{(}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{years}\PY{p}{)}\PY{p}{,} \PY{n+nb}{len}\PY{p}{(}\PY{n}{generations}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+\PY{k}{for} \PY{n}{i}\PY{p}{,} \PY{n}{gen} \PY{o+ow}{in} \PY{n+nb}{enumerate}\PY{p}{(}\PY{n}{generations}\PY{p}{)}\PY{p}{:}
+    \PY{k}{for} \PY{n}{j}\PY{p}{,} \PY{n}{yr} \PY{o+ow}{in} \PY{n+nb}{enumerate}\PY{p}{(}\PY{n}{years}\PY{p}{)}\PY{p}{:}
+        \PY{n}{filtered\PYZus{}res} \PY{o}{=} \PY{p}{[}\PY{n}{no} \PY{k}{for} \PY{n}{g}\PY{p}{,} \PY{n}{y}\PY{p}{,} \PY{n}{no} \PY{o+ow}{in} \PY{n}{res} \PY{k}{if} \PY{n}{g} \PY{o}{==} \PY{n}{gen} \PY{o+ow}{and} \PY{n}{y} \PY{o}{==} \PY{n}{yr}\PY{p}{]}
+        \PY{n}{no} \PY{o}{=} \PY{n}{filtered\PYZus{}res}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]} \PY{k}{if} \PY{n}{filtered\PYZus{}res} \PY{k}{else} \PY{l+m+mi}{0}
+        \PY{n}{suicides}\PY{p}{[}\PY{n}{j}\PY{p}{,} \PY{n}{i}\PY{p}{]} \PY{o}{=} \PY{n+nb}{round}\PY{p}{(}\PY{n}{no} \PY{o}{/} \PY{l+m+mi}{1000}\PY{p}{)} \PY{o}{/} \PY{l+m+mi}{10}
+
+\PY{n}{fig}\PY{p}{,} \PY{n}{ax} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{subplots}\PY{p}{(}\PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{12}\PY{p}{,} \PY{l+m+mi}{12}\PY{p}{)}\PY{p}{)}
+\PY{n}{im} \PY{o}{=} \PY{n}{ax}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{suicides}\PY{p}{,} \PY{n}{cmap}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{plasma}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} Axis formatting}
+\PY{n}{ax}\PY{o}{.}\PY{n}{set\PYZus{}xticks}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{arange}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{generations}\PY{p}{)}\PY{p}{)}\PY{p}{,} \PY{n}{labels}\PY{o}{=}\PY{n}{generations}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{set\PYZus{}yticks}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{arange}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{years}\PY{p}{)}\PY{p}{)}\PY{p}{,} \PY{n}{labels}\PY{o}{=}\PY{n}{years}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{set\PYZus{}ylabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Rok}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{set\PYZus{}xlabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Generacja}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} Rotate the tick labels and set their alignment.}
+\PY{n}{plt}\PY{o}{.}\PY{n}{setp}\PY{p}{(}\PY{n}{ax}\PY{o}{.}\PY{n}{get\PYZus{}xticklabels}\PY{p}{(}\PY{p}{)}\PY{p}{,} \PY{n}{rotation}\PY{o}{=}\PY{l+m+mi}{45}\PY{p}{,} \PY{n}{ha}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{right}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+         \PY{n}{rotation\PYZus{}mode}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{anchor}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} Loop over data dimensions and create text annotations.}
+\PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{years}\PY{p}{)}\PY{p}{)}\PY{p}{:}
+    \PY{k}{for} \PY{n}{j} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{generations}\PY{p}{)}\PY{p}{)}\PY{p}{:}
+        \PY{n}{text} \PY{o}{=} \PY{n}{ax}\PY{o}{.}\PY{n}{text}\PY{p}{(}\PY{n}{j}\PY{p}{,} \PY{n}{i}\PY{p}{,} \PY{n}{suicides}\PY{p}{[}\PY{n}{i}\PY{p}{,} \PY{n}{j}\PY{p}{]}\PY{p}{,}
+                       \PY{n}{ha}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{center}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{va}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{center}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{color}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{w}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+
+\PY{n}{ax}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Liczba dokonanych samobójstw (w 10 tysiącach)}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{w latach 1990\PYZhy{}2015 z podziałem na generacje}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{fig}\PY{o}{.}\PY{n}{tight\PYZus{}layout}\PY{p}{(}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_28_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    Wskaźniki położenia i rozproszenia
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{14}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{data} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+\PY{k}{for} \PY{n}{i}\PY{p}{,} \PY{n}{gen} \PY{o+ow}{in} \PY{n+nb}{enumerate}\PY{p}{(}\PY{n}{generations}\PY{p}{)}\PY{p}{:}
+    \PY{n}{filtered\PYZus{}res} \PY{o}{=} \PY{p}{[}\PY{n}{no} \PY{k}{for} \PY{n}{g}\PY{p}{,} \PY{n}{y}\PY{p}{,} \PY{n}{no} \PY{o+ow}{in} \PY{n}{res} \PY{k}{if} \PY{n}{g} \PY{o}{==} \PY{n}{gen}\PY{p}{]}
+    \PY{n}{data}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{p}{(}
+        \PY{n}{gen}\PY{p}{,}
+        \PY{n+nb}{round}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{mean}\PY{p}{(}\PY{n}{filtered\PYZus{}res}\PY{p}{)}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{)}\PY{p}{,}
+        \PY{n}{np}\PY{o}{.}\PY{n}{median}\PY{p}{(}\PY{n}{filtered\PYZus{}res}\PY{p}{)}\PY{p}{,}
+        \PY{n+nb}{round}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{std}\PY{p}{(}\PY{n}{filtered\PYZus{}res}\PY{p}{)}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{)}\PY{p}{,}
+        \PY{n+nb}{round}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{mean}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{absolute}\PY{p}{(}\PY{n}{filtered\PYZus{}res} \PY{o}{\PYZhy{}} \PY{n}{np}\PY{o}{.}\PY{n}{mean}\PY{p}{(}\PY{n}{filtered\PYZus{}res}\PY{p}{)}\PY{p}{)}\PY{p}{)}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{)}
+    \PY{p}{)}\PY{p}{)}
+
+\PY{n}{pd}\PY{o}{.}\PY{n}{DataFrame}\PY{p}{(}\PY{n}{data}\PY{p}{,} \PY{n}{columns}\PY{o}{=}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Generacja}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Wartość średnia}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Mediana}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Oddchylenie standardowe}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Oddchylenie przeciętne}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{p}{,} \PY{n}{index}\PY{o}{=}\PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,} \PY{n+nb}{len}\PY{p}{(}\PY{n}{generations}\PY{p}{)} \PY{o}{+} \PY{l+m+mi}{1}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{14}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+         Generacja  Wartość średnia  Mediana  Oddchylenie standardowe  \textbackslash{}
+1          Boomers          85302.6  89062.0                  21122.4
+2  G.I. Generation          25094.5  20862.0                  13601.3
+3     Generation X          53920.7  39907.5                  24754.3
+4     Generation Z           1693.6   1700.0                     74.3
+5       Millenials          24113.7  27403.0                  21344.0
+6           Silent          59619.0  59726.5                  20407.3
+
+   Oddchylenie przeciętne
+1                 15630.9
+2                  7818.8
+3                 22138.0
+4                    65.4
+5                 17841.4
+6                 16173.2
+\end{Verbatim}
+\end{tcolorbox}
+        
+    Najwięcej osób w latach 1990-2015, którzy popełnili samobójstwo to
+ludzie z generacji \emph{Baby boomers} (lata 1946-1964), \emph{Silent}
+(lata 1928-1945) oraz \emph{Generation X} (lata 1965-1980). Nie jest to
+wielkim zaskoczeniem, ponieważ te osoby w tych latach dorastały lub były
+dorosłe. Na powyższym zestawieniu widać wymianę pokoleń i zmianę
+generacji, w latach 2010-2015 coraz więcej osób z generacji \emph{X}
+popełniło samobójstw na rzecz generacji \emph{Boomers} i \emph{Silent}.
+Można także zaobserować pewne anomalie w danych w postaci skoków między
+poszczególnymi latami, a także zmniejszonej lub zerowej liczbie zgonów.
+
+    \hypertarget{opracowanie-modelu-statystycznego}{%
+\section{Opracowanie modelu
+statystycznego}\label{opracowanie-modelu-statystycznego}}
+
+    \hypertarget{zwiux105zek-liczby-samobuxf3jstw-z-pkb-poziomem-rozwoju-gospodarczego-paux144stwa}{%
+\subsection{Związek liczby samobójstw z PKB (poziomem rozwoju
+gospodarczego
+państwa)}\label{zwiux105zek-liczby-samobuxf3jstw-z-pkb-poziomem-rozwoju-gospodarczego-paux144stwa}}
+
+Pierwszym pomysłem jaki przyszedł mi do głowy była korelacja samobójstw
+z PKB, ponieważ mogłoby się wydawać, że są to silnie zależne od siebie
+zmienne - teoretycznie im większe PKB na osobę, tym populacja jest
+bardziej szczęśliwa. Zakładam, że PKB na osobę jest odwrotnie
+proporcjonalne do liczby popełnionych samobójstw. Na początku tworzę
+odpowiedni wykres i określam jakąś zależność między punktami.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{15}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{res} \PY{o}{=} \PY{n}{cur}\PY{o}{.}\PY{n}{execute}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}\PYZdq{}\PYZdq{}}
+\PY{l+s+s2}{    SELECT AVG(gdp\PYZus{}per\PYZus{}capita), SUM(suicides\PYZus{}no)}
+\PY{l+s+s2}{    FROM suicides}
+\PY{l+s+s2}{    WHERE }\PY{l+s+si}{\PYZob{}}\PY{n}{years\PYZus{}range}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{ AND country = }\PY{l+s+s2}{\PYZsq{}}\PY{l+s+s2}{Norway}\PY{l+s+s2}{\PYZsq{}}
+\PY{l+s+s2}{    GROUP BY year}
+\PY{l+s+s2}{\PYZdq{}\PYZdq{}\PYZdq{}}\PY{p}{)}\PY{o}{.}\PY{n}{fetchall}\PY{p}{(}\PY{p}{)}
+\PY{n}{x}\PY{p}{,} \PY{n}{y} \PY{o}{=} \PY{n+nb}{zip}\PY{p}{(}\PY{o}{*}\PY{n}{res}\PY{p}{)}
+
+\PY{n}{a}\PY{p}{,} \PY{n}{b}\PY{p}{,} \PY{n}{r}\PY{p}{,} \PY{n}{p}\PY{p}{,} \PY{n}{std\PYZus{}err} \PY{o}{=} \PY{n}{stats}\PY{o}{.}\PY{n}{linregress}\PY{p}{(}\PY{n}{x}\PY{p}{,} \PY{n}{y}\PY{p}{)}
+
+\PY{n}{fig}\PY{p}{,} \PY{n}{ax} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{subplots}\PY{p}{(}\PY{p}{)}
+
+\PY{n}{ax}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Zależność samobójstw od PKB na osobę Norwegii}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{set\PYZus{}xlabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{PKB na osobę [\PYZdl{}]}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{set\PYZus{}ylabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Liczba samobójstw}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+
+\PY{n}{plt}\PY{o}{.}\PY{n}{scatter}\PY{p}{(}\PY{n}{x}\PY{p}{,} \PY{n}{y}\PY{p}{,} \PY{n}{color}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{\PYZsh{}9940f2}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{x}\PY{p}{,} \PY{n+nb}{list}\PY{p}{(}\PY{n+nb}{map}\PY{p}{(}\PY{k}{lambda} \PY{n}{x}\PY{p}{:} \PY{n}{a}\PY{o}{*}\PY{n}{x} \PY{o}{+} \PY{n}{b}\PY{p}{,} \PY{n}{x}\PY{p}{)}\PY{p}{)}\PY{p}{,} \PY{n}{linestyle}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{\PYZhy{}\PYZhy{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{linewidth}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{,} \PY{n}{color}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{\PYZsh{}7a7784}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+
+\PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{f(x) = }\PY{l+s+si}{\PYZob{}}\PY{n+nb}{round}\PY{p}{(}\PY{n}{a}\PY{p}{,} \PY{l+m+mi}{5}\PY{p}{)}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{x + }\PY{l+s+si}{\PYZob{}}\PY{n+nb}{round}\PY{p}{(}\PY{n}{b}\PY{p}{,} \PY{l+m+mi}{2}\PY{p}{)}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_34_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+f(x) = -0.00048x + 583.78
+    \end{Verbatim}
+
+    Do wykresu dopasowałem model liniowy, który można powiedzieć, że
+relatywnie dobrze pokrywa się z punktami. Współczynnik kierunkowy
+prostej jest ujemny, a więc wygląda na to, że hipoteza została
+potwierdzona. Sprawdzę dodatkowo korelacje między zmiennymi za pomocą
+testu \texttt{Spearmana}.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{16}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{stats}\PY{o}{.}\PY{n}{spearmanr}\PY{p}{(}\PY{n}{x}\PY{p}{,} \PY{n}{y}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{16}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+SpearmanrResult(correlation=-0.31860293410948787, pvalue=0.11266597331346244)
+\end{Verbatim}
+\end{tcolorbox}
+        
+    Wartość wskaźnika p jest równa 0.11, zatem zmienne zależne są zależne od
+siebie. Hipoteza wydaje się być potwierdzona, nie mniej trzeba dodać, że
+test został poprowadzony tylko dla 1 państwa, co może być tylko i
+wyłącznie (nie)szczęśliwym wyborem. Hipotezę należałoby wykonać też dla
+przynajmniej kilkunastu innych państw z innym rozkładem PKB.
+
+    \hypertarget{zwiux105zek-liczby-samobuxf3jstw-z-rokiem}{%
+\subsection{Związek liczby samobójstw z
+rokiem}\label{zwiux105zek-liczby-samobuxf3jstw-z-rokiem}}
+
+Dość ciekawą, i wydawałoby się słuszną, hipotezą jest relacja liczby
+samobójstw z rokiem, to jest im młodszy rok tym bardziej zwiększa się
+liczba popełnionych samobójstw. Patrząc na wykres słupkowy z poprzedniej
+sekcji jest to raczej hipoteza nietrafiona, ponieważ widać, że
+przybliżone równanie liniowe posiada współczynnik kierunkowy bliski 1. W
+ramach pewności oszacuję funkcję liniową tego związku.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{17}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{res} \PY{o}{=} \PY{n}{cur}\PY{o}{.}\PY{n}{execute}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}\PYZdq{}\PYZdq{}}
+\PY{l+s+s2}{    SELECT year, SUM(suicides\PYZus{}no)}
+\PY{l+s+s2}{    FROM suicides}
+\PY{l+s+s2}{    WHERE year BETWEEN 1995 AND 2011}
+\PY{l+s+s2}{    GROUP BY year}
+\PY{l+s+s2}{\PYZdq{}\PYZdq{}\PYZdq{}}\PY{p}{)}\PY{o}{.}\PY{n}{fetchall}\PY{p}{(}\PY{p}{)}
+\PY{n}{x}\PY{p}{,} \PY{n}{y} \PY{o}{=} \PY{n+nb}{zip}\PY{p}{(}\PY{o}{*}\PY{n}{res}\PY{p}{)}
+
+\PY{n}{a}\PY{p}{,} \PY{n}{b}\PY{p}{,} \PY{n}{r}\PY{p}{,} \PY{n}{p}\PY{p}{,} \PY{n}{std\PYZus{}err} \PY{o}{=} \PY{n}{stats}\PY{o}{.}\PY{n}{linregress}\PY{p}{(}\PY{n}{x}\PY{p}{,} \PY{n}{y}\PY{p}{)}
+\PY{n}{fig}\PY{p}{,} \PY{n}{ax} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{subplots}\PY{p}{(}\PY{p}{)}
+
+\PY{n}{plt}\PY{o}{.}\PY{n}{scatter}\PY{p}{(}\PY{n}{x}\PY{p}{,} \PY{n}{y}\PY{p}{,} \PY{n}{color}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{\PYZsh{}9940f2}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{x}\PY{p}{,} \PY{n+nb}{list}\PY{p}{(}\PY{n+nb}{map}\PY{p}{(}\PY{k}{lambda} \PY{n}{x}\PY{p}{:} \PY{n}{a}\PY{o}{*}\PY{n}{x} \PY{o}{+} \PY{n}{b}\PY{p}{,} \PY{n}{x}\PY{p}{)}\PY{p}{)}\PY{p}{,} \PY{n}{linestyle}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{\PYZhy{}\PYZhy{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{linewidth}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{,} \PY{n}{color}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{\PYZsh{}7a7784}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+
+\PY{n}{ax}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Liczba dokonanych samobójstw na świecie między 1995\PYZhy{}2011}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{set\PYZus{}xlabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Rok}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{set\PYZus{}ylabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Łączna liczba samobójstw}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+
+\PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{f(x) = }\PY{l+s+si}{\PYZob{}}\PY{n+nb}{round}\PY{p}{(}\PY{n}{a}\PY{p}{,} \PY{l+m+mi}{2}\PY{p}{)}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{x + }\PY{l+s+si}{\PYZob{}}\PY{n+nb}{round}\PY{p}{(}\PY{n}{b}\PY{p}{,} \PY{l+m+mi}{2}\PY{p}{)}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_39_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+f(x) = -844.55x + 1930304.48
+    \end{Verbatim}
+
+    Współczynnik kierunkowy prostej jest mniejszy od zera, zatem według
+dostępnych danych statystycznych tendencja jest odwrotna niż stawiana
+hipoteza. Niekoniecznie musi tak być faktycznie, może być to spowodowane
+brakach w danych, patrząc np. dla zestawienia liczby samobójstw dla
+Polski tendencja jest lekko wzrostowa.
+
+    \hypertarget{podsumowanie}{%
+\section{Podsumowanie}\label{podsumowanie}}
+
+Projekt okazał się być niełatwy a zarazem ciekawy, podczas jego pisania
+napotkałem na kilka problemów, nauczyłem się pracy z nowymi narzędziami
+i środowiskami. Wnioski, które zostały zaprezentowane w modelu
+statystycznym były, w mojej opinii, wartościowe. W ramach rozwinięcia
+relacji liczby samobójstw a rokiem wybrałbym kilka innych zestawów
+danych (w tym te nowsze, które obejmują już rok 2022) i próbował je
+bardziej dogłębnie przeanalizować, ponieważ uważam, że co rok wzrasta
+liczba samobójców w Polsce jak i na świecie.
+
+W procesie tworzenia projektu nauczyłem się lub rozwinąłem swoje
+umiejętności w: lokalnym środowisku bazodanowym \texttt{SQLite},
+bardziej analitycznym podejściu w \texttt{Pythonie}, obsłudze bibliotek
+\texttt{NumPy}, \texttt{SciPy} oraz \texttt{Matplotlib}, obsłudze
+\texttt{JupyterLab}, a także statystycznej analizy problemów.
+
+
+    % Add a bibliography block to the postdoc
+    
+    
+    
+\end{document}
